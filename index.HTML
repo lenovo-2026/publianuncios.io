@@ -1,0 +1,1480 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace PREMIUN - COMPRAS Y VENTAS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#150C24;
+    --night-2:#0A0612;
+    --terracotta:#8B5CF6;
+    --terracotta-dark:#6D28D9;
+    --gold:#F2B84B;
+    --teal:#EC4899;
+    --teal-dark:#BE185D;
+    --cream:#F6F2FB;
+    --paper:#FFFFFF;
+    --ink:#1D1526;
+    --thread:#E3DAF0;
+    --muted:#8A7A9E;
+    --shadow: 0 18px 40px -18px rgba(21,12,36,.4);
+    --shadow-soft: 0 10px 26px -14px rgba(21,12,36,.3);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 100% 0%, rgba(139,92,246,.08), transparent 60%),
+      radial-gradient(900px 500px at 0% 10%, rgba(236,72,153,.06), transparent 55%),
+      var(--cream);
+    color:var(--ink);
+    font-family:'Archivo', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Archivo Black', 'Archivo', sans-serif;
+    letter-spacing:.5px;
+  }
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:3px;}
+
+  /* ---------------- TOP BAR ---------------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 5vw;
+    background:linear-gradient(120deg, var(--night) 0%, var(--night-2) 100%);
+    color:var(--cream);
+    border-bottom:4px solid var(--terracotta);
+    box-shadow:0 8px 24px -14px rgba(10,6,18,.55);
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Archivo Black', sans-serif;
+    font-size:1.15rem;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .brand span{color:var(--gold);}
+  .brand-mark{
+    width:34px;height:34px;border-radius:50%;
+    background:linear-gradient(135deg, var(--terracotta), var(--teal));
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem; color:var(--paper); font-weight:800;
+    flex-shrink:0;
+  }
+  .home-link{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2); color:var(--cream);
+    padding:8px 16px; border-radius:999px; font-size:.85rem; font-weight:600;
+    text-transform:uppercase; letter-spacing:.5px;
+    display:none; transition:background .15s ease, border-color .15s ease;
+  }
+  .home-link:hover{background:var(--terracotta); border-color:var(--terracotta);}
+
+  /* ---------------- HOME / HERO ---------------- */
+  #home{}
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    overflow:hidden;
+    background:var(--night);
+  }
+  .hero img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.65;
+  }
+  /* malla de color: da profundidad y un aire más vivo sobre la foto */
+  .hero::before{
+    content:"";
+    position:absolute; inset:0; z-index:1;
+    background:
+      radial-gradient(60% 50% at 85% 8%, rgba(242,184,75,.22), transparent 60%),
+      radial-gradient(55% 45% at 8% 15%, rgba(236,72,153,.22), transparent 60%),
+      radial-gradient(70% 60% at 50% 100%, rgba(139,92,246,.35), transparent 65%);
+    mix-blend-mode:normal;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0; z-index:1;
+    background:linear-gradient(0deg, rgba(10,6,18,.96) 10%, rgba(21,12,36,.35) 45%, rgba(21,12,36,.5) 100%);
+  }
+  .hero-content{
+    position:relative; z-index:2;
+    padding:8vw 6vw 2vw;
+    max-width:900px;
+  }
+  .eyebrow{
+    display:inline-block;
+    color:var(--gold);
+    font-weight:700;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    font-size:.8rem;
+    margin-bottom:14px;
+    border-bottom:2px solid var(--gold);
+    padding-bottom:6px;
+  }
+  .hero h1{
+    color:var(--paper);
+    font-size:clamp(2.4rem, 7vw, 5.2rem);
+    line-height:0.98;
+    margin:0 0 18px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(100deg, var(--terracotta) 10%, var(--teal) 60%, var(--gold) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p{
+    color:var(--thread);
+    font-size:1.15rem;
+    max-width:520px;
+    margin:0 0 8px;
+  }
+
+  /* ---------------- CATEGORY TAGS (signature element: hang-tag de vidrio) ---------------- */
+  .tag-strip{
+    padding:0 6vw 7vw;
+    position:relative; z-index:3;
+  }
+  .tag-strip h2{
+    color:var(--paper);
+    font-size:1.5rem;
+    margin:0 0 24px;
+    text-align:center;
+    text-shadow:0 2px 10px rgba(10,6,18,.55);
+  }
+  .tags{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:20px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .tag-btn{
+    position:relative;
+    background:linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:8px 8px 18px 18px;
+    padding:28px 16px 20px;
+    text-align:center;
+    box-shadow:0 14px 30px -18px rgba(10,6,18,.7);
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .tag-btn::before{
+    /* el "ojal" de una etiqueta de ropa colgante */
+    content:"";
+    position:absolute; top:-9px; left:50%; transform:translateX(-50%);
+    width:16px; height:16px; border-radius:50%;
+    background:var(--night-2);
+    border:1px solid rgba(255,255,255,.25);
+  }
+  .tag-btn .icon-badge{
+    width:52px; height:52px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, var(--terracotta), var(--teal));
+    font-size:1.5rem;
+    box-shadow:0 8px 18px -8px rgba(139,92,246,.7);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .tag-btn .label{
+    font-family:'Archivo Black', sans-serif;
+    font-size:1.02rem;
+    text-transform:uppercase;
+    color:var(--paper);
+    letter-spacing:.5px;
+  }
+  .tag-btn .sub{
+    font-size:.76rem;
+    color:var(--gold);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .tag-btn:hover{
+    transform:translateY(-7px);
+    background:linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.04));
+    border-color:var(--gold);
+    box-shadow:0 22px 40px -18px rgba(139,92,246,.55);
+  }
+  .tag-btn:hover .icon-badge{
+    transform:scale(1.08) rotate(-4deg);
+    box-shadow:0 10px 22px -6px rgba(236,72,153,.65);
+  }
+
+  /* ---------------- STRIP INFO ---------------- */
+  .info-strip{
+    display:flex; flex-wrap:wrap; gap:0;
+    background:linear-gradient(120deg, var(--terracotta) 0%, var(--terracotta-dark) 100%);
+    color:var(--paper);
+  }
+  .info-strip div{
+    flex:1 1 220px;
+    padding:18px 6vw;
+    text-align:center;
+    font-weight:700;
+    letter-spacing:.5px;
+    border-right:1px dashed rgba(255,255,255,.4);
+    font-size:.95rem;
+  }
+  .info-strip div:last-child{border-right:none;}
+
+  footer{
+    background:var(--night);
+    color:var(--thread);
+    text-align:center;
+    padding:26px 6vw;
+    font-size:.85rem;
+  }
+  footer strong{color:var(--gold);}
+
+  /* ---------------- CATEGORY PAGES ---------------- */
+  .category-page{ display:none; }
+  .category-page.active{ display:block; }
+  #home.active{ display:block; }
+  #home{ display:none; }
+
+  .cat-hero{
+    background:linear-gradient(135deg, var(--night) 0%, var(--night-2) 100%);
+    color:var(--paper);
+    padding:60px 6vw 50px;
+    position:relative;
+    overflow:hidden;
+  }
+  .cat-hero::before{
+    content:"";
+    position:absolute; right:-60px; top:-60px;
+    width:260px; height:260px; border-radius:50%;
+    background:var(--terracotta);
+    opacity:.25;
+  }
+  .cat-hero::after{
+    content:"";
+    position:absolute; left:10%; bottom:-90px;
+    width:200px; height:200px; border-radius:50%;
+    background:var(--teal);
+    opacity:.18;
+  }
+  .cat-hero .crumb{
+    color:var(--gold); font-weight:700; letter-spacing:2px; text-transform:uppercase; font-size:.8rem;
+  }
+  .cat-hero h2{
+    font-size:clamp(2rem, 5vw, 3.4rem);
+    margin:10px 0 8px;
+  }
+  .cat-hero p{
+    color:var(--thread);
+    max-width:520px;
+    margin:0;
+  }
+
+  .grid-wrap{
+    padding:50px 6vw 70px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:26px;
+  }
+  .product-card{
+    background:var(--paper);
+    border:1px solid var(--thread);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:var(--shadow-soft);
+    display:flex; flex-direction:column;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .product-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow); }
+
+  /* --- Galería de fotos --- */
+  .product-media{
+    position:relative;
+    aspect-ratio:1/1;
+    background:
+      repeating-linear-gradient(135deg, var(--cream), var(--cream) 10px, #EDE3F8 10px, #EDE3F8 20px);
+    display:flex; align-items:center; justify-content:center;
+    font-size:2.4rem;
+    color:var(--terracotta);
+    overflow:hidden;
+    cursor:zoom-in;
+  }
+  .product-media img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform .35s ease;
+  }
+  .product-card:hover .product-media img{ transform:scale(1.06); }
+  .media-missing-msg{
+    text-align:center; font-size:1.6rem; line-height:1.4; color:var(--muted);
+    padding:10px;
+  }
+  .media-missing-msg span{
+    display:block; font-size:.68rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:.3px; color:var(--terracotta-dark); margin-top:4px;
+  }
+  .zoom-hint{
+    position:absolute; left:0; right:0; bottom:0;
+    background:linear-gradient(0deg, rgba(10,6,18,.75), transparent);
+    color:#fff; font-size:.7rem; font-weight:700; letter-spacing:.3px;
+    text-align:center; padding:16px 0 8px;
+    opacity:0; transition:opacity .15s ease;
+    pointer-events:none;
+  }
+  .product-media:hover .zoom-hint{ opacity:1; }
+  .media-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:30px; height:30px; border-radius:50%;
+    background:rgba(21,12,36,.55); color:#fff; border:none;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.95rem; opacity:0; transition:opacity .15s ease, background .15s ease;
+  }
+  .product-media:hover .media-nav{ opacity:1; }
+  .media-nav:hover{ background:var(--terracotta); }
+  .media-nav.prev{ left:8px; }
+  .media-nav.next{ right:8px; }
+  .media-dots{
+    position:absolute; bottom:8px; left:0; right:0;
+    display:flex; justify-content:center; gap:5px;
+  }
+  .media-dots button{
+    width:6px; height:6px; padding:0; border-radius:50%; border:none;
+    background:rgba(255,255,255,.55);
+  }
+  .media-dots button.active{ background:var(--gold); width:16px; border-radius:4px; }
+  .media-count{
+    position:absolute; top:8px; right:8px;
+    background:rgba(21,12,36,.6); color:#fff; font-size:.68rem; font-weight:700;
+    padding:2px 8px; border-radius:999px; letter-spacing:.5px;
+  }
+
+  .product-info{padding:14px 16px 16px; display:flex; flex-direction:column; gap:5px;}
+  .product-info .pname{font-weight:700; font-size:.98rem; color:var(--ink);}
+  .product-info .pprice{color:var(--terracotta-dark); font-weight:800; font-size:1.05rem;}
+  .product-info .ptag{
+    font-size:.7rem; color:var(--teal-dark); font-weight:700; text-transform:uppercase; letter-spacing:1px;
+  }
+
+  .note-box{
+    max-width:1200px; margin:0 auto 10px; padding:0 6vw;
+  }
+  .note-box p{
+    background:#FFF3E4;
+    border:1px dashed var(--terracotta);
+    padding:14px 18px;
+    border-radius:8px;
+    font-size:.85rem;
+    color:var(--terracotta-dark);
+  }
+
+  /* ---------------- ADMIN MODE ---------------- */
+  .admin-btn{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2); color:var(--cream);
+    padding:8px 16px; border-radius:999px; font-size:.85rem; font-weight:600;
+    text-transform:uppercase; letter-spacing:.5px;
+    transition:background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .admin-btn.is-on{
+    background:linear-gradient(120deg, var(--terracotta), var(--teal));
+    border-color:transparent; color:var(--paper);
+  }
+  .admin-btn:hover{ background:var(--gold); border-color:var(--gold); color:var(--night); }
+  .topbar-right{ display:flex; align-items:center; gap:10px; }
+
+  .admin-only{ display:none !important; }
+  body.admin-mode .admin-only{ display:inline-flex !important; }
+  body.admin-mode .product-card .admin-only{ display:flex !important; }
+
+  .bar-actions{
+    max-width:1200px; margin:0 auto; padding:0 6vw;
+    display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .add-article-btn{
+    background:linear-gradient(120deg, var(--terracotta), var(--terracotta-dark)); color:var(--paper); border:none;
+    padding:12px 22px; border-radius:999px; font-weight:800;
+    text-transform:uppercase; letter-spacing:.5px; font-size:.85rem;
+    box-shadow:var(--shadow); transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .add-article-btn:hover{ transform:translateY(-2px); box-shadow:0 16px 30px -14px rgba(139,92,246,.55); }
+  .backup-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .backup-btn{
+    background:none; border:1px dashed var(--night); color:var(--night);
+    padding:10px 16px; border-radius:999px; font-size:.78rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.5px;
+  }
+  .backup-btn:hover{ background:var(--night); color:var(--gold); border-color:var(--night); }
+  .folder-btn.is-linked{ border-style:solid; border-color:#1a9c5f; color:#1a9c5f; }
+  .folder-btn.is-linked:hover{ background:#1a9c5f; color:var(--paper); border-color:#1a9c5f; }
+
+  .card-admin-row{
+    display:flex; gap:8px; padding:0 16px 14px;
+  }
+  .card-admin-row button{
+    flex:1; border:none; padding:8px 6px; border-radius:6px;
+    font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.3px;
+  }
+  .edit-btn{ background:var(--night); color:var(--gold); }
+  .edit-btn:hover{ background:var(--gold); color:var(--night); }
+  .del-btn{ background:#C0392B; color:var(--paper); }
+  .del-btn:hover{ background:#932D22; }
+
+  /* Modal overlay (used for access code + product form) */
+  .modal-overlay{
+    display:none;
+    position:fixed; inset:0; z-index:100;
+    background:rgba(10,6,18,.75);
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:var(--paper);
+    border-radius:12px;
+    border:2px dashed var(--night);
+    max-width:420px; width:100%;
+    padding:28px 26px;
+    box-shadow:var(--shadow);
+  }
+  .modal-box h3{
+    margin:0 0 6px; color:var(--night); font-size:1.3rem;
+  }
+  .modal-box .modal-sub{
+    font-size:.85rem; color:var(--muted); margin:0 0 20px;
+  }
+  .field{ margin-bottom:14px; display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--terracotta-dark); }
+  .field input{
+    border:1px solid var(--thread); border-radius:8px; padding:10px 12px;
+    font-size:.95rem; font-family:inherit; background:var(--cream);
+  }
+  .field input:focus{ border-color:var(--terracotta); }
+  .field .hint{ font-size:.72rem; color:var(--muted); font-weight:500; text-transform:none; letter-spacing:0; }
+
+  .photo-picker-btn{
+    background:var(--teal); color:var(--paper); border:none;
+    padding:10px 16px; border-radius:8px; font-weight:700; font-size:.85rem;
+    text-transform:uppercase; letter-spacing:.4px; align-self:flex-start;
+  }
+  .photo-picker-btn:hover{ background:var(--teal-dark); }
+  .photo-previews{
+    display:grid; grid-template-columns:repeat(5, 1fr); gap:8px; margin-top:4px;
+  }
+  .photo-thumb{
+    position:relative; aspect-ratio:1/1; border-radius:8px; overflow:hidden;
+    border:1px solid var(--thread); background:var(--cream);
+  }
+  .photo-thumb img{ width:100%; height:100%; object-fit:cover; }
+  .photo-thumb .rm{
+    position:absolute; top:2px; right:2px;
+    width:18px; height:18px; border-radius:50%; border:none;
+    background:rgba(21,12,36,.75); color:#fff; font-size:.65rem; line-height:1; padding:0;
+  }
+  .photo-thumb .rm:hover{ background:#C0392B; }
+  .photo-slot-empty{
+    aspect-ratio:1/1; border-radius:8px; border:1px dashed var(--thread);
+    display:flex; align-items:center; justify-content:center; color:#CBB9E6; font-size:1.2rem;
+  }
+  .modal-actions{ display:flex; gap:10px; margin-top:18px; }
+  .modal-actions button{
+    flex:1; border:none; padding:11px; border-radius:999px;
+    font-weight:800; text-transform:uppercase; letter-spacing:.5px; font-size:.82rem;
+  }
+  .btn-primary{ background:var(--terracotta); color:var(--paper); }
+  .btn-primary:hover{ background:var(--night); color:var(--gold); }
+  .btn-ghost{ background:none; border:1px solid var(--thread) !important; color:var(--ink); }
+  .btn-ghost:hover{ background:var(--cream); }
+  .modal-error{ color:#C0392B; font-size:.82rem; font-weight:700; margin:-8px 0 14px; min-height:1em; }
+
+  .empty-msg{
+    text-align:center; color:var(--muted); padding:40px 0; font-size:.95rem;
+  }
+
+  /* ---------------- VISOR DE FOTOS (LIGHTBOX) ---------------- */
+  .lightbox-overlay{
+    display:none;
+    position:fixed; inset:0; z-index:300;
+    background:rgba(10,6,18,.94);
+    align-items:center; justify-content:center;
+  }
+  .lightbox-overlay.open{ display:flex; }
+  .lightbox-img{
+    max-width:88vw; max-height:78vh;
+    object-fit:contain;
+    border-radius:6px;
+    cursor:zoom-in;
+    transition:transform .25s ease;
+    touch-action:pinch-zoom;
+  }
+  .lightbox-img.zoomed{ transform:scale(1.9); cursor:zoom-out; }
+  .lightbox-close{
+    position:absolute; top:18px; right:18px;
+    width:42px; height:42px; border-radius:50%;
+    background:rgba(255,255,255,.12); color:#fff; border:none; font-size:1.2rem;
+  }
+  .lightbox-close:hover{ background:var(--terracotta); }
+  .lightbox-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:46px; height:46px; border-radius:50%;
+    background:rgba(255,255,255,.12); color:#fff; border:none; font-size:1.7rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-nav:hover{ background:var(--terracotta); }
+  .lightbox-nav.prev{ left:14px; }
+  .lightbox-nav.next{ right:14px; }
+  .lightbox-caption{
+    position:absolute; bottom:56px; left:0; right:0;
+    text-align:center; color:#fff; font-weight:700; font-size:.95rem;
+    padding:0 20px;
+  }
+  .lightbox-counter{
+    position:absolute; bottom:26px; left:0; right:0;
+    text-align:center; color:var(--gold); font-size:.78rem; font-weight:700; letter-spacing:.5px;
+  }
+
+  /* ---------------- RESPONSIVO: MÓVIL Y TABLET ---------------- */
+  @media (max-width: 900px){
+    .hero{ min-height:92vh; }
+    .hero-content{ padding:16vw 6vw 4vw; }
+    .tags{ grid-template-columns:repeat(2, 1fr); gap:14px; }
+    .product-grid{ grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:16px; }
+    .media-nav, .zoom-hint{ opacity:1; } /* sin hover en pantallas táctiles, siempre visibles */
+  }
+  @media (max-width: 640px){
+    .topbar{ padding:12px 4vw; flex-wrap:wrap; gap:10px; }
+    .brand{ font-size:.95rem; }
+    .brand-mark{ width:28px; height:28px; font-size:.8rem; }
+    .topbar-right{ gap:6px; flex-wrap:wrap; }
+    .home-link, .admin-btn{ padding:7px 12px; font-size:.72rem; }
+
+    .hero{ min-height:88vh; }
+    .eyebrow{ font-size:.68rem; letter-spacing:2px; }
+    .hero p{ font-size:1rem; }
+    .tag-strip h2{ font-size:1.2rem; }
+    .tags{ grid-template-columns:repeat(2, 1fr); gap:12px; }
+    .tag-btn{ padding:18px 10px 14px; }
+    .tag-btn .icon-badge{ width:42px; height:42px; font-size:1.2rem; }
+    .tag-btn .label{ font-size:.9rem; }
+
+    .info-strip{ flex-direction:column; }
+    .info-strip div{ border-right:none; border-bottom:1px dashed rgba(255,255,255,.4); padding:14px 6vw; font-size:.85rem; }
+    .info-strip div:last-child{ border-bottom:none; }
+
+    .cat-hero{ padding:38px 6vw 32px; }
+    .grid-wrap{ padding:30px 5vw 50px; }
+    .bar-actions{ flex-direction:column; align-items:stretch; gap:12px; }
+    .add-article-btn{ text-align:center; }
+    .backup-actions{ justify-content:stretch; }
+    .backup-btn{ flex:1; }
+    .product-grid{ grid-template-columns:repeat(2, 1fr); gap:12px; }
+    .product-info{ padding:10px 12px 12px; }
+    .product-info .pname{ font-size:.85rem; }
+    .product-info .pprice{ font-size:.92rem; }
+
+    .modal-box{ padding:22px 18px; max-height:88vh; overflow-y:auto; }
+    .photo-previews{ grid-template-columns:repeat(5, 1fr); gap:6px; }
+    .lightbox-nav{ width:38px; height:38px; font-size:1.3rem; }
+    .lightbox-close{ width:36px; height:36px; font-size:1rem; top:12px; right:12px; }
+    .lightbox-caption{ font-size:.85rem; bottom:48px; }
+  }
+  @media (max-width: 380px){
+    .tags{ grid-template-columns:1fr 1fr; }
+    .product-grid{ grid-template-columns:1fr 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= TOP BAR ================= -->
+<div class="topbar">
+  <div class="brand"><span class="brand-mark">MP</span>Marketplace <span>PREMIUN</span></div>
+  <div class="topbar-right">
+    <button class="home-link" id="homeLinkBtn" onclick="showPage('home')">← Volver al inicio</button>
+    <button class="admin-btn" id="adminBtn" onclick="onAdminButtonClick()">🔒 Modo edición</button>
+  </div>
+</div>
+
+<!-- ================= MODAL: CÓDIGO DE ACCESO ================= -->
+<div class="modal-overlay" id="codeModal">
+  <div class="modal-box">
+    <h3>Modo edición</h3>
+    <p class="modal-sub">Ingresa el código de acceso para agregar, editar o eliminar prendas.</p>
+    <div class="field">
+      <label for="codeInput">Código de acceso</label>
+      <input type="password" id="codeInput" inputmode="numeric" placeholder="••••••••" autocomplete="off">
+    </div>
+    <p class="modal-error" id="codeError"></p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeCodeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="checkAccessCode()">Ingresar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: FORMULARIO DE PRODUCTO ================= -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box">
+    <h3 id="productModalTitle">Agregar artículo</h3>
+    <p class="modal-sub" id="productModalSub">Completa los datos de la prenda.</p>
+    <input type="hidden" id="pf-id">
+    <input type="hidden" id="pf-cat">
+    <div class="field">
+      <label>Fotos de la prenda (mínimo 1, máximo 5)</label>
+      <span class="hint" id="photoCounter">0 / 5 fotos agregadas</span>
+      <div class="photo-previews" id="photoPreviews"></div>
+      <button type="button" class="photo-picker-btn" onclick="document.getElementById('pf-photos').click()">📷 Agregar fotos</button>
+      <input type="file" id="pf-photos" accept="image/*" multiple style="display:none">
+    </div>
+    <div class="field">
+      <label for="pf-icon">Ícono / emoji (respaldo si no hay fotos)</label>
+      <input type="text" id="pf-icon" placeholder="🧥" maxlength="4">
+    </div>
+    <div class="field">
+      <label for="pf-name">Nombre del producto</label>
+      <input type="text" id="pf-name" placeholder="Ej. Casaca Denim Altiplano">
+    </div>
+    <div class="field">
+      <label for="pf-tag">Etiqueta corta</label>
+      <input type="text" id="pf-tag" placeholder="Ej. Jean oversize">
+    </div>
+    <div class="field">
+      <label for="pf-price">Precio (S/)</label>
+      <input type="text" id="pf-price" placeholder="Ej. 119.90" inputmode="decimal">
+    </div>
+    <p class="modal-error" id="productError"></p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeProductModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveProductFromForm()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- input oculto para importar respaldo .txt -->
+<input type="file" id="importFile" accept=".txt,.json" style="display:none">
+
+<!-- ================= VISOR DE FOTOS AMPLIADO (LIGHTBOX) ================= -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightboxBackdrop(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-nav prev" onclick="lightboxNav(-1)">‹</button>
+  <img id="lightboxImg" class="lightbox-img" onclick="toggleZoom(event)" alt="Foto ampliada del producto">
+  <button class="lightbox-nav next" onclick="lightboxNav(1)">›</button>
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
+
+
+<!-- ================= HOME PAGE ================= -->
+<div id="home" class="active">
+
+  <section class="hero">
+    <img src="portada.png" alt="Chicas de compras en la Colección Perú">
+    <div class="hero-content">
+      <span class="eyebrow">Colección Perú · Fusión de moda y cultura</span>
+      <h1>Vestimos tu<br><em>Aventura</em></h1>
+      <p>Prendas urbanas con espíritu andino. Elige tu categoría y arma tu look para la ciudad o para el camino.</p>
+    </div>
+
+    <div class="tag-strip">
+      <h2>Elige tu categoría</h2>
+      <div class="tags">
+        <button class="tag-btn" onclick="showPage('casacas')">
+          <span class="icon-badge">🧥</span>
+          <span class="label">Casacas</span>
+          <span class="sub">Abrigo urbano</span>
+        </button>
+        <button class="tag-btn" onclick="showPage('poleras')">
+          <span class="icon-badge">👕</span>
+          <span class="label">Poleras</span>
+          <span class="sub">Estilo diario</span>
+        </button>
+        <button class="tag-btn" onclick="showPage('polos')">
+          <span class="icon-badge">🎽</span>
+          <span class="label">Polos</span>
+          <span class="sub">Básicos con actitud</span>
+        </button>
+        <button class="tag-btn" onclick="showPage('joggers')">
+          <span class="icon-badge">👖</span>
+          <span class="label">Joggers</span>
+          <span class="sub">Comodidad total</span>
+        </button>
+        <button class="tag-btn" onclick="showPage('variados')">
+          <span class="icon-badge">🛍️</span>
+          <span class="label">Variados</span>
+          <span class="sub">Un poco de todo</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="info-strip">
+    <div>🚚 Envío gratis a todo el Perú</div>
+    <div>🏷️ Hasta 50% Dto. en prendas seleccionadas</div>
+    <div>🔒 Compra 100% segura</div>
+  </div>
+
+  <footer>
+    <strong>Marketplace PREMIUN</strong> — Compras y ventas. Todos los derechos reservados.
+  </footer>
+</div>
+
+<!-- ================= CATEGORY: CASACAS ================= -->
+<div id="casacas" class="category-page">
+  <section class="cat-hero">
+    <span class="crumb">Categoría</span>
+    <h2>Casacas</h2>
+    <p>Abrigo con carácter: jean, drill y softshell para enfrentar cualquier clima de la ciudad o la ruta.</p>
+  </section>
+  <div class="grid-wrap">
+    <div class="bar-actions">
+      <button class="add-article-btn admin-only" onclick="openAddForm('casacas')">+ Agregar artículo</button>
+      <div class="backup-actions admin-only">
+        <button class="backup-btn folder-btn" onclick="linkImagesFolder()">📁 Vincular carpeta de imágenes</button>
+        <button class="backup-btn" onclick="exportData()">⬇ Exportar datos (.txt)</button>
+        <button class="backup-btn" onclick="triggerImport()">⬆ Importar datos (.txt)</button>
+      </div>
+    </div>
+    <div class="product-grid" id="grid-casacas"></div>
+  </div>
+</div>
+
+<!-- ================= CATEGORY: POLERAS ================= -->
+<div id="poleras" class="category-page">
+  <section class="cat-hero">
+    <span class="crumb">Categoría</span>
+    <h2>Poleras</h2>
+    <p>Algodón suave y estampados propios para tu día a día, del salón de clases a la calle.</p>
+  </section>
+  <div class="grid-wrap">
+    <div class="bar-actions">
+      <button class="add-article-btn admin-only" onclick="openAddForm('poleras')">+ Agregar artículo</button>
+      <div class="backup-actions admin-only">
+        <button class="backup-btn folder-btn" onclick="linkImagesFolder()">📁 Vincular carpeta de imágenes</button>
+        <button class="backup-btn" onclick="exportData()">⬇ Exportar datos (.txt)</button>
+        <button class="backup-btn" onclick="triggerImport()">⬆ Importar datos (.txt)</button>
+      </div>
+    </div>
+    <div class="product-grid" id="grid-poleras"></div>
+  </div>
+</div>
+
+<!-- ================= CATEGORY: POLOS ================= -->
+<div id="polos" class="category-page">
+  <section class="cat-hero">
+    <span class="crumb">Categoría</span>
+    <h2>Polos</h2>
+    <p>Básicos versátiles en corte clásico y slim, listos para combinar con todo.</p>
+  </section>
+  <div class="grid-wrap">
+    <div class="bar-actions">
+      <button class="add-article-btn admin-only" onclick="openAddForm('polos')">+ Agregar artículo</button>
+      <div class="backup-actions admin-only">
+        <button class="backup-btn folder-btn" onclick="linkImagesFolder()">📁 Vincular carpeta de imágenes</button>
+        <button class="backup-btn" onclick="exportData()">⬇ Exportar datos (.txt)</button>
+        <button class="backup-btn" onclick="triggerImport()">⬆ Importar datos (.txt)</button>
+      </div>
+    </div>
+    <div class="product-grid" id="grid-polos"></div>
+  </div>
+</div>
+
+<!-- ================= CATEGORY: JOGGERS ================= -->
+<div id="joggers" class="category-page">
+  <section class="cat-hero">
+    <span class="crumb">Categoría</span>
+    <h2>Joggers</h2>
+    <p>Comodidad para moverte todo el día, con bolsillos funcionales y ajuste moderno.</p>
+  </section>
+  <div class="grid-wrap">
+    <div class="bar-actions">
+      <button class="add-article-btn admin-only" onclick="openAddForm('joggers')">+ Agregar artículo</button>
+      <div class="backup-actions admin-only">
+        <button class="backup-btn folder-btn" onclick="linkImagesFolder()">📁 Vincular carpeta de imágenes</button>
+        <button class="backup-btn" onclick="exportData()">⬇ Exportar datos (.txt)</button>
+        <button class="backup-btn" onclick="triggerImport()">⬆ Importar datos (.txt)</button>
+      </div>
+    </div>
+    <div class="product-grid" id="grid-joggers"></div>
+  </div>
+</div>
+
+<!-- ================= CATEGORY: VARIADOS ================= -->
+<div id="variados" class="category-page">
+  <section class="cat-hero">
+    <span class="crumb">Categoría</span>
+    <h2>Variados</h2>
+    <p>Accesorios, gorros, bolsos y todo lo que no encaja en una sola categoría pero completa tu look.</p>
+  </section>
+  <div class="grid-wrap">
+    <div class="bar-actions">
+      <button class="add-article-btn admin-only" onclick="openAddForm('variados')">+ Agregar artículo</button>
+      <div class="backup-actions admin-only">
+        <button class="backup-btn folder-btn" onclick="linkImagesFolder()">📁 Vincular carpeta de imágenes</button>
+        <button class="backup-btn" onclick="exportData()">⬇ Exportar datos (.txt)</button>
+        <button class="backup-btn" onclick="triggerImport()">⬆ Importar datos (.txt)</button>
+      </div>
+    </div>
+    <div class="product-grid" id="grid-variados"></div>
+  </div>
+</div>
+
+<script>
+  /* ============ CONFIG ============ */
+  var ACCESS_CODE = "9894308";
+  var STORAGE_KEY = "anv_products_v1";
+  var isAdmin = false;
+  var currentCategory = "home";
+  var editingId = null; // null = creando nuevo artículo
+
+  var CATS = ["casacas","poleras","polos","joggers","variados"];
+
+  /* ============ DATOS POR DEFECTO (se usan solo la primera vez) ============ */
+  var defaultData = {
+    casacas: [
+      {id:"c1", icon:"🧥", tag:"Jean oversize", name:"Casaca Denim Altiplano", price:"119.90"},
+      {id:"c2", icon:"🧥", tag:"Softshell", name:"Casaca Cortavientos Andes", price:"149.90"},
+      {id:"c3", icon:"🧥", tag:"Drill", name:"Casaca Urbana Cusco", price:"99.90"},
+      {id:"c4", icon:"🧥", tag:"Puffer", name:"Casaca Acolchada Puno", price:"169.90"}
+    ],
+    poleras: [
+      {id:"p1", icon:"👕", tag:"Oversize", name:"Polera Machu Picchu", price:"59.90"},
+      {id:"p2", icon:"👕", tag:"Básica", name:"Polera Lisa Titicaca", price:"44.90"},
+      {id:"p3", icon:"👕", tag:"Con capucha", name:"Polera Hoodie Aventura", price:"79.90"},
+      {id:"p4", icon:"👕", tag:"Estampada", name:"Polera Gráfica Andina", price:"54.90"}
+    ],
+    polos: [
+      {id:"po1", icon:"🎽", tag:"Slim fit", name:"Polo Clásico Blanco", price:"39.90"},
+      {id:"po2", icon:"🎽", tag:"Piqué", name:"Polo Piqué Terracota", price:"45.90"},
+      {id:"po3", icon:"🎽", tag:"Manga larga", name:"Polo Manga Larga Puno", price:"49.90"},
+      {id:"po4", icon:"🎽", tag:"Rayado", name:"Polo Rayas Costeño", price:"42.90"}
+    ],
+    joggers: [
+      {id:"j1", icon:"👖", tag:"Jogger", name:"Jogger Negro Urbano", price:"69.90"},
+      {id:"j2", icon:"👖", tag:"Cargo", name:"Jogger Cargo Explorer", price:"89.90"},
+      {id:"j3", icon:"👖", tag:"Buzo", name:"Jogger Buzo Deportivo", price:"64.90"},
+      {id:"j4", icon:"👖", tag:"Slim", name:"Jogger Slim Gris", price:"74.90"}
+    ],
+    variados: [
+      {id:"v1", icon:"🧢", tag:"Accesorio", name:"Gorra Bordada Perú", price:"34.90"},
+      {id:"v2", icon:"🧣", tag:"Textil andino", name:"Bufanda Alpaca", price:"89.90"},
+      {id:"v3", icon:"🎒", tag:"Bolso", name:"Mochila Aventura", price:"129.90"},
+      {id:"v4", icon:"🧦", tag:"Básico", name:"Pack Medias Andinas", price:"24.90"}
+    ]
+  };
+
+  var productsData = loadData();
+
+  /* ============ PERSISTENCIA (localStorage: queda guardado aunque cierres el navegador) ============ */
+  function loadData(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){ return JSON.parse(raw); }
+    }catch(e){}
+    return JSON.parse(JSON.stringify(defaultData));
+  }
+  function saveData(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(productsData));
+    }catch(e){
+      alert("No se pudo guardar automáticamente en este navegador. Usa 'Exportar datos (.txt)' para respaldar manualmente.");
+    }
+  }
+
+  /* ============ NAVEGACIÓN ============ */
+  function showPage(id){
+    document.querySelectorAll('#home, .category-page').forEach(function(el){
+      el.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+    document.getElementById('homeLinkBtn').style.display = (id === 'home') ? 'none' : 'inline-block';
+    currentCategory = id;
+    if(CATS.indexOf(id) !== -1){ renderGrid(id); }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  /* ============ RENDER DE PRODUCTOS ============ */
+  var galleryIndex = {}; // guarda la foto actual mostrada por artículo, ej: {"casacas_c1": 0}
+
+  function mediaHtml(cat, item){
+    var key = cat + '_' + item.id;
+    var images = item.images || [];
+    if(images.length === 0){
+      return '<div class="product-media">' + escapeHtml(item.icon || '👕') + '</div>';
+    }
+    var idx = galleryIndex[key] || 0;
+    var navHtml = '';
+    if(images.length > 1){
+      navHtml =
+        '<button class="media-nav prev" onclick="event.stopPropagation(); cardNav(\'' + cat + '\',\'' + item.id + '\',-1)">‹</button>' +
+        '<button class="media-nav next" onclick="event.stopPropagation(); cardNav(\'' + cat + '\',\'' + item.id + '\',1)">›</button>' +
+        '<div class="media-count" id="count-' + key + '">' + (idx+1) + '/' + images.length + '</div>' +
+        '<div class="media-dots" id="dots-' + key + '">' +
+          images.map(function(_, i){
+            return '<button class="' + (i===idx?'active':'') + '" onclick="event.stopPropagation(); cardGoto(\'' + cat + '\',\'' + item.id + '\',' + i + ')"></button>';
+          }).join('') +
+        '</div>';
+    }
+    return (
+      '<div class="product-media" onclick="openLightbox(\'' + cat + '\',\'' + item.id + '\')">' +
+        '<img id="img-' + key + '" src="' + images[idx] + '" alt="' + escapeHtml(item.name || '') + '" onerror="handleImgError(this)">' +
+        '<div class="zoom-hint">🔍 Ver más de cerca</div>' +
+        navHtml +
+      '</div>'
+    );
+  }
+  function handleImgError(img){
+    if(img.dataset.fallbackShown) return;
+    img.dataset.fallbackShown = '1';
+    var wrap = img.closest('.product-media');
+    if(!wrap) return;
+    wrap.classList.add('media-missing');
+    wrap.innerHTML =
+      '<div class="media-missing-msg">📷<br>Imagen no encontrada' +
+      (isAdmin ? '<br><span>Vuelve a tocar "Vincular carpeta de imágenes"</span>' : '') +
+      '</div>';
+  }
+
+  function renderGrid(cat){
+    var grid = document.getElementById('grid-' + cat);
+    if(!grid) return;
+    var items = productsData[cat] || [];
+    if(items.length === 0){
+      grid.innerHTML = '<p class="empty-msg">Todavía no hay artículos en esta categoría.</p>';
+      return;
+    }
+    grid.innerHTML = items.map(function(item){
+      return (
+        '<div class="product-card">' +
+          mediaHtml(cat, item) +
+          '<div class="product-info">' +
+            '<span class="ptag">' + escapeHtml(item.tag || '') + '</span>' +
+            '<span class="pname">' + escapeHtml(item.name || '') + '</span>' +
+            '<span class="pprice">S/ ' + escapeHtml(item.price || '0.00') + '</span>' +
+          '</div>' +
+          '<div class="card-admin-row admin-only">' +
+            '<button class="edit-btn" onclick="openEditForm(\'' + cat + '\',\'' + item.id + '\')">Editar</button>' +
+            '<button class="del-btn" onclick="deleteProduct(\'' + cat + '\',\'' + item.id + '\')">Eliminar</button>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+  function renderAllGrids(){
+    CATS.forEach(function(cat){ renderGrid(cat); });
+  }
+
+  /* ============ NAVEGACIÓN DE LA GALERÍA (sin recargar toda la tarjeta) ============ */
+  function cardSetIndex(cat, id, idx){
+    var key = cat + '_' + id;
+    var item = (productsData[cat] || []).find(function(p){ return p.id === id; });
+    if(!item || !item.images || item.images.length === 0) return;
+    var len = item.images.length;
+    idx = ((idx % len) + len) % len;
+    galleryIndex[key] = idx;
+    var img = document.getElementById('img-' + key);
+    if(img) img.src = item.images[idx];
+    var count = document.getElementById('count-' + key);
+    if(count) count.textContent = (idx+1) + '/' + len;
+    var dots = document.getElementById('dots-' + key);
+    if(dots){
+      Array.prototype.forEach.call(dots.children, function(dot, i){
+        dot.classList.toggle('active', i === idx);
+      });
+    }
+  }
+  function cardNav(cat, id, dir){
+    var key = cat + '_' + id;
+    var current = galleryIndex[key] || 0;
+    cardSetIndex(cat, id, current + dir);
+  }
+  function cardGoto(cat, id, idx){
+    cardSetIndex(cat, id, idx);
+  }
+
+  /* ============ VISOR DE FOTOS AMPLIADO (LIGHTBOX) ============ */
+  var lightboxState = {cat:null, id:null};
+  function findItem(cat, id){
+    return (productsData[cat] || []).find(function(p){ return p.id === id; });
+  }
+  function openLightbox(cat, id){
+    var item = findItem(cat, id);
+    if(!item || !item.images || item.images.length === 0) return;
+    lightboxState.cat = cat; lightboxState.id = id;
+    updateLightbox();
+    document.getElementById('lightboxOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function updateLightbox(){
+    var item = findItem(lightboxState.cat, lightboxState.id);
+    if(!item) return;
+    var key = lightboxState.cat + '_' + lightboxState.id;
+    var idx = galleryIndex[key] || 0;
+    var img = document.getElementById('lightboxImg');
+    img.src = item.images[idx];
+    img.classList.remove('zoomed');
+    document.getElementById('lightboxCaption').textContent = item.name || '';
+    document.getElementById('lightboxCounter').textContent = (idx+1) + ' / ' + item.images.length;
+    var multi = item.images.length > 1;
+    document.querySelectorAll('.lightbox-nav').forEach(function(b){ b.style.display = multi ? 'flex' : 'none'; });
+  }
+  function lightboxNav(dir){
+    if(!lightboxState.cat) return;
+    var current = galleryIndex[lightboxState.cat + '_' + lightboxState.id] || 0;
+    cardSetIndex(lightboxState.cat, lightboxState.id, current + dir);
+    updateLightbox();
+  }
+  function closeLightbox(){
+    document.getElementById('lightboxOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    lightboxState.cat = null; lightboxState.id = null;
+  }
+  function closeLightboxBackdrop(e){
+    if(e.target.id === 'lightboxOverlay') closeLightbox();
+  }
+  function toggleZoom(e){
+    e.stopPropagation();
+    document.getElementById('lightboxImg').classList.toggle('zoomed');
+  }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  /* ============ MODO EDICIÓN / CÓDIGO DE ACCESO ============ */
+  function onAdminButtonClick(){
+    if(isAdmin){
+      isAdmin = false;
+      document.body.classList.remove('admin-mode');
+      document.getElementById('adminBtn').classList.remove('is-on');
+      document.getElementById('adminBtn').textContent = '🔒 Modo edición';
+      renderAllGrids();
+    } else {
+      openCodeModal();
+    }
+  }
+  function openCodeModal(){
+    document.getElementById('codeError').textContent = '';
+    document.getElementById('codeInput').value = '';
+    document.getElementById('codeModal').classList.add('open');
+    setTimeout(function(){ document.getElementById('codeInput').focus(); }, 50);
+  }
+  function closeCodeModal(){
+    document.getElementById('codeModal').classList.remove('open');
+  }
+  function checkAccessCode(){
+    var val = document.getElementById('codeInput').value.trim();
+    if(val === ACCESS_CODE){
+      isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('adminBtn').classList.add('is-on');
+      document.getElementById('adminBtn').textContent = '🔓 Editando';
+      closeCodeModal();
+      renderAllGrids();
+      attemptAutoRelink();
+    } else {
+      document.getElementById('codeError').textContent = 'Código incorrecto. Intenta de nuevo.';
+    }
+  }
+  // Permite confirmar el código con la tecla Enter, y navegar el visor con teclado
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' && document.getElementById('codeModal').classList.contains('open')){
+      checkAccessCode();
+    }
+    if(e.key === 'Enter' && document.getElementById('productModal').classList.contains('open')){
+      saveProductFromForm();
+    }
+    if(document.getElementById('lightboxOverlay').classList.contains('open')){
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowLeft') lightboxNav(-1);
+      if(e.key === 'ArrowRight') lightboxNav(1);
+    }
+  });
+
+  /* ============ CARPETA DE IMÁGENES (File System Access API) ============
+     Permite vincular la carpeta donde vive este index.html para que, al
+     agregar un artículo, las fotos se guarden también como archivos .png
+     al costado del index (listas para jalarlas y editarlas), y al
+     eliminar un artículo, esos .png se borren automáticamente.
+     Funciona en navegadores de escritorio basados en Chromium
+     (Chrome / Edge). En otros navegadores, el sistema sigue funcionando
+     normal (localStorage), simplemente no se crean los archivos .png. */
+  var imagesDirHandle = null;
+  var FS_SUPPORTED = ('showDirectoryPicker' in window);
+
+  function idbOpen(){
+    return new Promise(function(resolve, reject){
+      var req = indexedDB.open('anv_fs_db', 1);
+      req.onupgradeneeded = function(){ req.result.createObjectStore('handles'); };
+      req.onsuccess = function(){ resolve(req.result); };
+      req.onerror = function(){ reject(req.error); };
+    });
+  }
+  function idbSet(key, value){
+    return idbOpen().then(function(db){
+      return new Promise(function(resolve, reject){
+        var tx = db.transaction('handles', 'readwrite');
+        tx.objectStore('handles').put(value, key);
+        tx.oncomplete = function(){ resolve(); };
+        tx.onerror = function(){ reject(tx.error); };
+      });
+    });
+  }
+  function idbGet(key){
+    return idbOpen().then(function(db){
+      return new Promise(function(resolve, reject){
+        var tx = db.transaction('handles', 'readonly');
+        var req = tx.objectStore('handles').get(key);
+        req.onsuccess = function(){ resolve(req.result || null); };
+        req.onerror = function(){ reject(req.error); };
+      });
+    });
+  }
+
+  function updateFolderButtons(){
+    var linked = !!imagesDirHandle;
+    document.querySelectorAll('.folder-btn').forEach(function(btn){
+      btn.textContent = linked ? '📁 Carpeta vinculada ✓' : '📁 Vincular carpeta de imágenes';
+      btn.classList.toggle('is-linked', linked);
+    });
+  }
+
+  async function linkImagesFolder(){
+    if(!FS_SUPPORTED){
+      alert('Tu navegador no permite crear archivos .png automáticamente en una carpeta (usa Chrome o Edge en computadora para esta función). Puedes seguir usando "Exportar datos (.txt)" como respaldo.');
+      return;
+    }
+    try{
+      var handle = await window.showDirectoryPicker();
+      var perm = await handle.requestPermission({mode:'readwrite'});
+      if(perm !== 'granted'){
+        alert('No se concedió permiso de escritura sobre la carpeta.');
+        return;
+      }
+      imagesDirHandle = handle;
+      await idbSet('imagesDirHandle', handle);
+      updateFolderButtons();
+      alert('Carpeta "' + handle.name + '" vinculada. Desde ahora, cada foto que agregues se guardará también como archivo .png real dentro de esa carpeta (al costado del index.html), y se borrará al eliminar el artículo.\n\nImportante: para que las fotos se vean en otra PC, copia el index.html JUNTO con esta carpeta "' + handle.name + '" (debe quedar al costado, con el mismo nombre). Así no necesitarás importar ningún .txt para ver las imágenes.');
+    }catch(err){
+      // el usuario canceló el selector, no hacer nada
+    }
+  }
+
+  async function tryRestoreFolderLink(){
+    if(!FS_SUPPORTED) return;
+    try{
+      var handle = await idbGet('imagesDirHandle');
+      if(!handle) return;
+      var perm = await handle.queryPermission({mode:'readwrite'});
+      if(perm === 'granted'){
+        imagesDirHandle = handle;
+        updateFolderButtons();
+      }
+      // si el permiso quedó en "prompt", no molestamos con un popup al cargar;
+      // se reintenta solo al entrar en modo edición (ver attemptAutoRelink).
+    }catch(err){
+      // handle inválido o carpeta movida/borrada: se ignora
+    }
+  }
+
+  /* Se llama justo al entrar en modo edición (clic en "Ingresar"), reutilizando
+     ese mismo clic como el gesto que el navegador exige para reconceder el
+     permiso de escritura sobre la carpeta ya vinculada anteriormente — así
+     casi nunca hace falta tocar "Vincular carpeta de imágenes" de nuevo.
+     Ningún navegador permite saltarse esto por completo por seguridad: la
+     primera vez SIEMPRE hay que elegir la carpeta a mano una vez. */
+  async function attemptAutoRelink(){
+    if(!FS_SUPPORTED || imagesDirHandle) return;
+    try{
+      var handle = await idbGet('imagesDirHandle');
+      if(!handle) return;
+      var perm = await handle.requestPermission({mode:'readwrite'});
+      if(perm === 'granted'){
+        imagesDirHandle = handle;
+        updateFolderButtons();
+        renderAllGrids();
+      }
+    }catch(err){
+      // se ignora: el usuario puede tocar "Vincular carpeta de imágenes" manualmente
+    }
+  }
+
+  function dataUrlToBlob(dataUrl){
+    var parts = dataUrl.split(',');
+    var mime = parts[0].match(/:(.*?);/)[1];
+    var binary = atob(parts[1]);
+    var arr = new Uint8Array(binary.length);
+    for(var i = 0; i < binary.length; i++){ arr[i] = binary.charCodeAt(i); }
+    return new Blob([arr], {type: mime});
+  }
+
+  /* Convierte cada entrada de pendingImages en un Blob real, sea que venga
+     recién elegida (dataURL) o que ya exista como archivo en la carpeta
+     vinculada (ruta relativa tipo "imagenes/casacas_123_0.png") */
+  async function resolveImageBlob(entry){
+    if(typeof entry === 'string' && entry.indexOf('data:') === 0){
+      return dataUrlToBlob(entry);
+    }
+    if(imagesDirHandle && typeof entry === 'string'){
+      try{
+        var fileName = entry.split('/').pop();
+        var fh = await imagesDirHandle.getFileHandle(fileName);
+        return await fh.getFile();
+      }catch(err){ return null; }
+    }
+    return null;
+  }
+
+  /* Escribe las fotos como archivos .png reales al costado del index
+     (dentro de la carpeta vinculada) y devuelve las rutas relativas
+     (ej. "imagenes/casacas_123_0.png") para guardarlas en vez del base64.
+     Así, si luego copias index.html + esa carpeta a otra PC, las fotos
+     se ven solas, sin necesidad de importar ningún .txt. */
+  async function writeProductImageFiles(cat, id, images){
+    if(!imagesDirHandle) return null;
+    try{
+      var blobs = [];
+      for(var i = 0; i < images.length; i++){
+        blobs.push(await resolveImageBlob(images[i]));
+      }
+      // se borran los .png anteriores de este artículo para no dejar sobrantes
+      await deleteProductImageFiles(cat, id);
+      var folderName = imagesDirHandle.name;
+      var paths = [];
+      for(var j = 0; j < blobs.length; j++){
+        if(!blobs[j]) continue;
+        var fileName = cat + '_' + id + '_' + j + '.png';
+        var fileHandle = await imagesDirHandle.getFileHandle(fileName, {create:true});
+        var writable = await fileHandle.createWritable();
+        await writable.write(blobs[j]);
+        await writable.close();
+        paths.push(folderName + '/' + fileName);
+      }
+      return paths;
+    }catch(err){
+      console.warn('No se pudo escribir los .png en la carpeta vinculada:', err);
+      return null;
+    }
+  }
+
+  async function deleteProductImageFiles(cat, id){
+    if(!imagesDirHandle) return;
+    for(var i = 0; i < MAX_PHOTOS; i++){
+      try{
+        await imagesDirHandle.removeEntry(cat + '_' + id + '_' + i + '.png');
+      }catch(err){
+        // el archivo no existe, se ignora
+      }
+    }
+  }
+
+  tryRestoreFolderLink();
+
+  /* ============ AGREGAR / EDITAR PRODUCTO ============ */
+  var MAX_PHOTOS = 5;
+  var pendingImages = []; // fotos (dataURL) del artículo que se está creando/editando
+
+  function openAddForm(cat){
+    editingId = null;
+    pendingImages = [];
+    document.getElementById('productModalTitle').textContent = 'Agregar artículo';
+    document.getElementById('productModalSub').textContent = 'Se guardará automáticamente en ' + cat + '.';
+    document.getElementById('pf-cat').value = cat;
+    document.getElementById('pf-id').value = '';
+    document.getElementById('pf-icon').value = '';
+    document.getElementById('pf-name').value = '';
+    document.getElementById('pf-tag').value = '';
+    document.getElementById('pf-price').value = '';
+    document.getElementById('productError').textContent = '';
+    renderPhotoPreviews();
+    document.getElementById('productModal').classList.add('open');
+  }
+  function openEditForm(cat, id){
+    var items = productsData[cat] || [];
+    var item = items.find(function(p){ return p.id === id; });
+    if(!item) return;
+    editingId = id;
+    pendingImages = (item.images || []).slice();
+    document.getElementById('productModalTitle').textContent = 'Editar artículo';
+    document.getElementById('productModalSub').textContent = 'Los cambios se guardan automáticamente.';
+    document.getElementById('pf-cat').value = cat;
+    document.getElementById('pf-id').value = id;
+    document.getElementById('pf-icon').value = item.icon || '';
+    document.getElementById('pf-name').value = item.name || '';
+    document.getElementById('pf-tag').value = item.tag || '';
+    document.getElementById('pf-price').value = item.price || '';
+    document.getElementById('productError').textContent = '';
+    renderPhotoPreviews();
+    document.getElementById('productModal').classList.add('open');
+  }
+  function closeProductModal(){
+    document.getElementById('productModal').classList.remove('open');
+  }
+
+  function renderPhotoPreviews(){
+    var wrap = document.getElementById('photoPreviews');
+    var counter = document.getElementById('photoCounter');
+    counter.textContent = pendingImages.length + ' / ' + MAX_PHOTOS + ' fotos agregadas';
+    var html = pendingImages.map(function(src, i){
+      return '<div class="photo-thumb"><img src="' + src + '"><button type="button" class="rm" onclick="removePendingImage(' + i + ')">✕</button></div>';
+    }).join('');
+    for(var i = pendingImages.length; i < MAX_PHOTOS; i++){
+      html += '<div class="photo-slot-empty">+</div>';
+    }
+    wrap.innerHTML = html;
+  }
+  function removePendingImage(i){
+    pendingImages.splice(i, 1);
+    renderPhotoPreviews();
+  }
+  function resizeImage(file, callback){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var maxDim = 800;
+        var w = img.width, h = img.height;
+        if(w > h && w > maxDim){ h = Math.round(h * (maxDim / w)); w = maxDim; }
+        else if(h > maxDim){ w = Math.round(w * (maxDim / h)); h = maxDim; }
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        callback(canvas.toDataURL('image/png'));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+  document.getElementById('pf-photos').addEventListener('change', function(e){
+    var files = Array.prototype.slice.call(e.target.files);
+    var room = MAX_PHOTOS - pendingImages.length;
+    if(room <= 0){
+      document.getElementById('productError').textContent = 'Ya alcanzaste el máximo de 5 fotos.';
+      e.target.value = '';
+      return;
+    }
+    files = files.slice(0, room);
+    var remaining = files.length;
+    files.forEach(function(file){
+      resizeImage(file, function(dataUrl){
+        pendingImages.push(dataUrl);
+        remaining--;
+        if(remaining <= 0){ renderPhotoPreviews(); }
+      });
+    });
+    e.target.value = '';
+  });
+
+  async function saveProductFromForm(){
+    var cat = document.getElementById('pf-cat').value;
+    var name = document.getElementById('pf-name').value.trim();
+    var tag = document.getElementById('pf-tag').value.trim();
+    var price = document.getElementById('pf-price').value.trim();
+    var icon = document.getElementById('pf-icon').value.trim() || '👕';
+
+    if(!name || !price){
+      document.getElementById('productError').textContent = 'Completa al menos el nombre y el precio.';
+      return;
+    }
+    if(pendingImages.length < 1){
+      document.getElementById('productError').textContent = 'Agrega al menos 1 foto de la prenda (máximo 5).';
+      return;
+    }
+    if(!productsData[cat]) productsData[cat] = [];
+
+    var imagesToStore = pendingImages.slice();
+    var savedId = editingId;
+    if(editingId){
+      var item = productsData[cat].find(function(p){ return p.id === editingId; });
+      if(item){
+        item.name = name; item.tag = tag; item.price = price; item.icon = icon;
+        item.images = imagesToStore;
+      }
+    } else {
+      var newId = cat + '_' + Date.now();
+      productsData[cat].push({id:newId, icon:icon, tag:tag, name:name, price:price, images: imagesToStore});
+      savedId = newId;
+    }
+    saveData();
+    renderGrid(cat);
+    closeProductModal();
+
+    // si hay una carpeta vinculada, se escriben los .png reales y se
+    // reemplaza el base64 guardado por la ruta del archivo (portátil)
+    if(imagesDirHandle){
+      var paths = await writeProductImageFiles(cat, savedId, imagesToStore);
+      if(paths && paths.length === imagesToStore.length){
+        var itm = productsData[cat].find(function(p){ return p.id === savedId; });
+        if(itm){
+          itm.images = paths;
+          saveData();
+          renderGrid(cat);
+        }
+      }
+    }
+  }
+  function deleteProduct(cat, id){
+    if(!confirm('¿Eliminar este artículo? Esta acción no se puede deshacer.')) return;
+    productsData[cat] = (productsData[cat] || []).filter(function(p){ return p.id !== id; });
+    saveData();
+    deleteProductImageFiles(cat, id);
+    renderGrid(cat);
+  }
+
+  /* ============ RESPALDO EN .TXT (exportar / importar) ============ */
+  function exportData(){
+    var blob = new Blob([JSON.stringify(productsData, null, 2)], {type:'text/plain'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'anuncios-y-ventas-datos.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  function triggerImport(){
+    document.getElementById('importFile').click();
+  }
+  document.getElementById('importFile').addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try{
+        var parsed = JSON.parse(ev.target.result);
+        productsData = parsed;
+        saveData();
+        renderAllGrids();
+        alert('Datos importados correctamente.');
+      }catch(err){
+        alert('El archivo .txt no tiene un formato válido. Debe ser el mismo formato exportado desde esta página.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  /* ============ INICIO ============ */
+  renderAllGrids();
+</script>
+
+</body>
+</html>
